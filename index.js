@@ -19,6 +19,14 @@ const pool = new Pool({
 app.use(cors());
 app.use(express.json());
 
+// Serve static files and HTML at root
+app.use(express.static('.'));
+
+// Root route - serve the HTML file
+app.get('/', (req, res) => {
+  res.sendFile('freerobux.html', { root: '.' });
+});
+
 // Health check
 app.get('/health', (req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
